@@ -17,11 +17,19 @@ const MathControlsRight = props => {
         <div>
             {controls.map(({ value }) => {
                 if (value === '=') {
-                    return <MathControl key={Date.now() + Math.random() ** Math.random() * 10 } value={value} handleClick={props.calculate} />;
+                    return (
+                        <MathControl
+                            key={
+                                Date.now() + Math.random() ** Math.random() * 10
+                            }
+                            value={value}
+                            handleClick={props.calculate}
+                        />
+                    );
                 }
                 return (
                     <MathControl
-                        key={Date.now() + Math.random()}
+                        key={Date.now() + Math.random() ** Math.random() * 10}
                         value={value}
                         handleClick={props.pressed}
                     />

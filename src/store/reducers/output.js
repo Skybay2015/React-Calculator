@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
             // allow to write dot only 1 time
             if (payload.isOneTimeAvailable) {
                 if (
-                    state.currentValue.toString().indexOf(payload.value) === -1
+                    state.currentValue.indexOf(payload.value) === -1
                 ) {
                     if (state.calculated) {
                         return {
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
                         historyValue: state.historyValue + ' ' + payload.value,
                     };
                 }
-                // if first touched control is Number
+
                 if (state.lastPressedMathSymbol) {
                     return {
                         ...state,
@@ -62,6 +62,14 @@ export default (state = initialState, action) => {
             }
 
         case 'PRESSED_MATH_SYMBOL':
+            if (
+                state.currentValue.length === 1 &&
+                state.currentValue.indexOf('0') === 0
+            ) {
+                return state;
+            }
+            if (state.currentValue.indexOf(payload.value) !== -1) return state;
+
             if (state.calculated) {
                 return {
                     ...state,
@@ -71,6 +79,7 @@ export default (state = initialState, action) => {
                     lastPressedMathSymbol: true,
                 };
             }
+
             return {
                 ...state,
                 currentValue: payload.value,
@@ -81,7 +90,7 @@ export default (state = initialState, action) => {
         case 'CALCULATE':
             return {
                 ...state,
-                currentValue: eval(state.historyValue),
+                currentValue: `${eval(state.historyValue)}`,
                 historyValue:
                     state.historyValue +
                     ' ' +
